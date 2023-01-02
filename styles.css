@@ -16,9 +16,10 @@ body{
     background-color: rgb(152, 82, 231) !important;
 }
 .container{
-    background-color: rgb(187, 172, 172);
+    background-color: rgb(47 42 66 / 73%);
     padding: 2rem 1rem;
     border-radius: 5px;
+    color: white;
     max-width: 700px !important;
 }
 .container:last-of-type{
@@ -26,7 +27,7 @@ body{
     color: white;
 }
 .container > div{
-    border: 1px solid rgb(184, 172, 172);
+    /* border: 1px solid rgb(47 42 66 / 73%); */
     padding: 0.5rem 1rem;
 }
 input{
@@ -36,4 +37,20 @@ input{
     margin-right: 6px !important;
     border-radius: 20px;
     padding-left: 10px;
+}
+@media (max-width: 414px){
+    body{
+        padding: 0 1rem;
+    }
+    .one > div{
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    .two{
+       padding-right: 0.3rem !important;
+    } 
+    input{
+        width: 89% !important;
+    }
 }
