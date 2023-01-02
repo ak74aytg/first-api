@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  </head>
+  <body class="pb-5">
+
+
+    <h1 class=" h1 text-center mt-3">
+        Anime
+        <small style="color: #c8dcec !important" class="text-muted">Quote Generator</small>
+    </h1>
+
+
+    <div class="one container mt-5">
+        <div class="check d-flex justify-content-around">
+            <button value="RANDOM" class="btn btn-primary">RANDOM</button>
+            <button value="TITLE" class="btn btn-success">ANIME TITLE</button>
+            <button value="CHARACTER" class="btn btn-danger">ANIME CHARACTER</button>
+        </div>
+    </div>
+
+
+    <div class="two container  mt-5">
+        <form id="search">
+            <input type="text" class="search">
+            <i class="fa fa-search"></i>
+        </form>
+    </div>
+
+
+    <div class="output three container mt-5">
+        <i class="fa-solid fa-quote-left"></i>
+        <p id="quote">In this crazy-ass world, there's no point in playing the blame game.</p>
+        <i class="fa-solid fa-quote-right"></i>
+        <p style="margin-right: 1%; text-align: end">--by <span id="by"> Mahiro Fuwa</span><br><span style="color: rgb(184 184 199);" id='of'>(Zetsuen no Tempest)</span></p>
+    </div>
+
+
+    <script>
+        window.addEventListener('load', ()=>{
+            document.querySelector('.two').classList.add('hidden');
+            // rand();
+        })
+  
+        const rand = ()=>{
+            fetch("https://animechan.vercel.app/api/random")
+          .then((response) => response.json())
+          .then((quote) => {
+            const line = quote.quote;
+            const name = quote.character;
+            const anime = quote.anime;
+            document.querySelector('#quote').innerHTML = line;
+            document.querySelector('#by').innerHTML = name;
+            document.querySelector('#of').innerHTML = `(${anime})`;
+          })
+          .catch((err) =>{
+            document.querySelector('#quote').innerHTML = `In this crazy-ass world, there's no point in playing the blame game.`;
+            document.querySelector('#by').innerHTML = `Mahiro Fuwa`;
+            document.querySelector('#of').innerHTML = `(Zetsuen no Tempest)`;
+          });
+        }
+        const tits = (title)=>{
+            fetch(`https://animechan.vercel.app/api/random/anime?title=${title}`)
+          .then((response) => response.json())
+          .then((quote) => {
+            const line = quote.quote;
+            const name = quote.character;
+            const anime = quote.anime;
+            document.querySelector('#quote').innerHTML = line;
+            document.querySelector('#of').innerHTML = `(${anime})`;
+            document.querySelector('#by').innerHTML = name;
+          })
+          .catch((err) =>{
+            document.querySelector('#quote').innerHTML = `In this crazy-ass world, there's no point in playing the blame game.`;
+            document.querySelector('#by').innerHTML = `Mahiro Fuwa`;
+            document.querySelector('#of').innerHTML = `(Zetsuen no Tempest)`;
+          });
+        }
+        const char = (name)=>{
+            fetch(`https://animechan.vercel.app/api/random/character?name=${name}`)
+          .then((response) => response.json())
+          .then((quote) => {
+            const line = quote.quote;
+            const name = quote.character;
+            const anime = quote.anime;
+            document.querySelector('#quote').innerHTML = line;
+            document.querySelector('#of').innerHTML = `(${anime})`;
+            document.querySelector('#by').innerHTML = name;
+          })
+          .catch((err) =>{
+            document.querySelector('#quote').innerHTML = `In this crazy-ass world, there's no point in playing the blame game.`;
+            document.querySelector('#by').innerHTML = `Mahiro Fuwa`;
+            document.querySelector('#of').innerHTML = `(Zetsuen no Tempest)`;
+          });
+        }
+
+
+        const fetchh =(value)=>{
+            const input = document.querySelector('.search').value;
+            if(value === 'TITLE'){
+                tits(input)
+            }
+            else if(value === 'CHARACTER'){
+                char(input)
+            }
+        }
+
+        document.querySelector('.check').addEventListener('click', (e)=>{
+            let value = 'RANDOM';
+            if(e.target.getAttribute('value') === "RANDOM"){
+                value = 'RANDOM';
+                rand();
+            }
+            else if(e.target.getAttribute('value') === "TITLE"){
+                value = 'TITLE';
+            }else{
+                value = 'CHARACTER';
+            }  
+
+            searchUI(value);
+            buttonUI(value);
+
+            document.querySelector('#search').addEventListener('submit', (e)=>{
+                e.preventDefault();
+                fetchh(value);
+            })
+            document.querySelector('.search').addEventListener('click', (e)=>{
+                e.preventDefault();
+                fetchh(value);
+            })
+        })
+        
+        function buttonUI(value){
+            document.querySelectorAll('button').forEach((btn)=>{
+                if(btn.getAttribute('value') != value){
+                    btn.style.opacity = '0.4';
+                }else{
+                    btn.style.opacity = '1';
+                }
+            })
+        }
+        function searchUI(value){
+            if(value === 'RANDOM'){
+                document.querySelector('.two').classList.add('hidden');
+            }
+            else{
+                document.querySelector('.two').classList.remove('hidden');
+            }
+        }
+
+        document.querySelector('#search').addEventListener('submit', (e)=>{
+            e.preventDefault();
+        })
+
+
+        fetch('https://api.catboys.com/img')
+        .then(res => res.json())
+        .then(data => console.log(data))
+        
+    </script>
+  </body>
+</html>
